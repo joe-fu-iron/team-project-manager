@@ -4,240 +4,195 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="專案管理">
 <title>專案管理 · 團隊協作</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --accent:#2563eb; --accent-d:#1d4ed8; --accent-pale:#eff6ff;
-  --green:#16a34a; --green-pale:#f0fdf4;
-  --amber:#d97706; --amber-pale:#fffbeb;
-  --red:#dc2626; --red-pale:#fef2f2;
-  --purple:#7c3aed; --purple-pale:#f5f3ff;
-  --ink:#111827; --ink2:#374151; --ink3:#6b7280; --ink4:#9ca3af;
-  --bg:#f9fafb; --card:#ffffff; --border:#e5e7eb; --border2:#d1d5db;
-  --sidebar:240px; --topbar:52px;
-  --r:10px; --sh:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
-  --sh-lg:0 4px 16px rgba(0,0,0,.1);
+  --accent:#2563eb;--accent-d:#1d4ed8;--accent-pale:#eff6ff;
+  --green:#16a34a;--green-pale:#f0fdf4;
+  --amber:#d97706;--amber-pale:#fffbeb;
+  --red:#dc2626;--red-pale:#fef2f2;
+  --purple:#7c3aed;--purple-pale:#f5f3ff;
+  --ink:#111827;--ink2:#374151;--ink3:#6b7280;--ink4:#9ca3af;
+  --bg:#f9fafb;--card:#ffffff;--border:#e5e7eb;--border2:#d1d5db;
+  --sidebar:240px;--r:10px;
+  --sh:0 1px 3px rgba(0,0,0,.08);--sh-lg:0 4px 16px rgba(0,0,0,.1);
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--ink);font-size:14px;}
-
-/* ── LAYOUT ── */
 #app{display:flex;height:100vh;overflow:hidden;}
 
 /* SIDEBAR */
-#sidebar{
-  width:var(--sidebar);flex-shrink:0;background:var(--card);
-  border-right:1px solid var(--border);display:flex;flex-direction:column;
-  height:100vh;overflow-y:auto;
-}
+#sidebar{width:var(--sidebar);flex-shrink:0;background:var(--card);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;overflow-y:auto;}
 .sb-logo{padding:16px 18px 12px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);}
-.sb-logo .dot{width:28px;height:28px;border-radius:8px;background:var(--accent);display:flex;align-items:center;justify-content:center;}
-.sb-logo .dot svg{width:14px;height:14px;fill:#fff;}
-.sb-logo .name{font-size:14px;font-weight:700;color:var(--ink);}
-.sb-logo .ver{font-size:10px;color:var(--ink4);}
-.sb-section{padding:10px 10px 4px;font-size:10px;font-weight:700;color:var(--ink4);letter-spacing:.5px;text-transform:uppercase;}
-.sb-item{
-  display:flex;align-items:center;gap:9px;padding:8px 12px;margin:1px 6px;
-  border-radius:8px;cursor:pointer;font-size:13px;font-weight:500;color:var(--ink2);
-  transition:background .12s,color .12s;
-}
+.sb-logo-icon{width:30px;height:30px;border-radius:8px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:16px;}
+.sb-name{font-size:14px;font-weight:700;color:var(--ink);}
+.sb-ver{font-size:10px;color:var(--ink4);}
+.sb-sec{padding:10px 10px 4px;font-size:10px;font-weight:700;color:var(--ink4);letter-spacing:.5px;text-transform:uppercase;}
+.sb-item{display:flex;align-items:center;gap:9px;padding:8px 12px;margin:1px 6px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:500;color:var(--ink2);transition:background .12s,color .12s;}
 .sb-item:hover{background:var(--bg);}
 .sb-item.active{background:var(--accent-pale);color:var(--accent);}
-.sb-item .icon{font-size:15px;width:20px;text-align:center;}
+.sb-item .ic{font-size:15px;width:20px;text-align:center;}
 .sb-item .badge{margin-left:auto;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;background:var(--accent);color:#fff;}
-.sb-divider{height:1px;background:var(--border);margin:8px 16px;}
-.sb-gcal{margin:10px 10px 16px;padding:10px 12px;border-radius:var(--r);border:1px dashed var(--border2);cursor:pointer;transition:border-color .15s;}
-.sb-gcal:hover{border-color:var(--accent);}
-.sb-gcal .gc-title{font-size:12px;font-weight:600;color:var(--ink2);display:flex;align-items:center;gap:6px;}
-.sb-gcal .gc-sub{font-size:10px;color:var(--ink4);margin-top:3px;}
-.sb-gcal.connected .gc-title{color:var(--green);}
+.sb-div{height:1px;background:var(--border);margin:8px 16px;}
+.sb-sync{margin:8px 10px 14px;padding:10px 12px;border-radius:var(--r);background:var(--bg);border:1px solid var(--border);}
+.sb-sync-row{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:500;color:var(--ink3);}
+#sb-dot{width:7px;height:7px;border-radius:50%;background:var(--ink4);flex-shrink:0;transition:background .3s;}
+#sb-dot.ok{background:var(--green);}
+#sb-dot.busy{background:var(--amber);animation:pulse .9s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.sb-sync-sub{font-size:10px;color:var(--ink4);margin-top:3px;}
 
 /* MAIN */
 #main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
-
-/* TOPBAR */
-#topbar{
-  height:var(--topbar);flex-shrink:0;background:var(--card);
-  border-bottom:1px solid var(--border);
-  display:flex;align-items:center;padding:0 20px;gap:12px;
-  box-shadow:var(--sh);
-}
+#topbar{height:52px;flex-shrink:0;background:var(--card);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:12px;box-shadow:var(--sh);}
 #menu-btn{display:none;width:32px;height:32px;border:none;background:transparent;cursor:pointer;font-size:18px;color:var(--ink3);}
 #page-title{font-size:16px;font-weight:700;color:var(--ink);}
 .tb-right{margin-left:auto;display:flex;align-items:center;gap:8px;}
-.tb-btn{
-  padding:6px 14px;border-radius:20px;border:1px solid var(--border2);
-  background:transparent;font-size:12px;font-weight:600;cursor:pointer;
-  color:var(--ink2);font-family:inherit;transition:all .14s;display:flex;align-items:center;gap:5px;
-}
+.tb-btn{padding:6px 14px;border-radius:20px;border:1px solid var(--border2);background:transparent;font-size:12px;font-weight:600;cursor:pointer;color:var(--ink2);font-family:inherit;transition:all .14s;display:flex;align-items:center;gap:5px;}
 .tb-btn:hover{border-color:var(--accent);color:var(--accent);}
 .tb-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
 .tb-btn.primary:hover{background:var(--accent-d);}
-#sync-pill{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;background:var(--bg);border:1px solid var(--border);font-size:11px;color:var(--ink4);}
-#sync-dot{width:6px;height:6px;border-radius:50%;background:var(--ink4);}
-#sync-dot.ok{background:var(--green);}
-#sync-dot.busy{background:var(--amber);animation:pulse .9s infinite;}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-
-/* CONTENT */
 #content{flex:1;overflow-y:auto;padding:24px;}
+.page{display:none;}.page.active{display:block;}
 
-/* PAGES */
-.page{display:none;} .page.active{display:block;}
-
-/* ── DASHBOARD ── */
+/* STATS */
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;}
 .stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px;box-shadow:var(--sh);}
-.stat-card .sl{font-size:11px;font-weight:600;color:var(--ink4);margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px;}
-.stat-card .sv{font-size:26px;font-weight:700;color:var(--ink);}
-.stat-card .sd{font-size:11px;color:var(--ink4);margin-top:3px;}
-.stat-card .bar{height:3px;border-radius:2px;margin-top:10px;background:var(--border);}
-.stat-card .bar-fill{height:100%;border-radius:2px;transition:width .6s;}
+.sl{font-size:11px;font-weight:700;color:var(--ink4);margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px;}
+.sv{font-size:26px;font-weight:700;color:var(--ink);}
+.sd{font-size:11px;color:var(--ink4);margin-top:3px;}
+.sbar{height:3px;border-radius:2px;margin-top:10px;background:var(--border);}
+.sbar-f{height:100%;border-radius:2px;}
 
-.section-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
-.section-header h3{font-size:15px;font-weight:700;color:var(--ink);}
-.section-header .count{font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;background:var(--bg);border:1px solid var(--border);color:var(--ink3);}
+/* SECTION */
+.sec-hd{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.sec-hd h3{font-size:15px;font-weight:700;}
+.sec-hd .cnt{font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;background:var(--bg);border:1px solid var(--border);color:var(--ink3);}
 
-.today-events{display:flex;flex-direction:column;gap:8px;margin-bottom:24px;}
-.ev-row{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;display:flex;align-items:center;gap:12px;box-shadow:var(--sh);cursor:pointer;transition:border-color .14s;}
+/* EVENT ROW */
+.ev-row{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;display:flex;align-items:center;gap:12px;box-shadow:var(--sh);cursor:pointer;transition:border-color .14s;margin-bottom:8px;}
 .ev-row:hover{border-color:var(--accent);}
 .ev-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
 .ev-time{font-size:12px;font-weight:600;color:var(--ink3);min-width:44px;}
-.ev-title{font-size:13px;font-weight:600;color:var(--ink);}
+.ev-title{font-size:13px;font-weight:600;}
 .ev-sub{font-size:11px;color:var(--ink4);}
 .ev-badge{margin-left:auto;font-size:10px;font-weight:600;padding:3px 8px;border-radius:6px;}
 
-/* ── CALENDAR ── */
+/* CAL */
 .cal-toolbar{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap;}
-.cal-toolbar h2{font-size:20px;font-weight:700;color:var(--ink);}
+.cal-toolbar h2{font-size:20px;font-weight:700;}
 .nav-btn{width:30px;height:30px;border-radius:50%;border:1px solid var(--border2);background:var(--card);cursor:pointer;font-size:14px;color:var(--ink3);display:flex;align-items:center;justify-content:center;transition:all .13s;}
 .nav-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent);}
 .today-btn{padding:5px 12px;border-radius:20px;border:1px solid var(--border2);background:var(--card);font-size:12px;font-weight:500;cursor:pointer;color:var(--ink2);font-family:inherit;}
-.view-switch{display:flex;gap:2px;background:var(--bg);border-radius:8px;padding:3px;border:1px solid var(--border);margin-left:auto;}
-.vs-btn{padding:4px 12px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--ink3);font-family:inherit;transition:all .13s;}
-.vs-btn.active{background:var(--card);color:var(--ink);box-shadow:var(--sh);}
-
 .cal-wrap{background:var(--card);border-radius:var(--r);border:1px solid var(--border);overflow:hidden;box-shadow:var(--sh);}
 .dow-row{display:grid;grid-template-columns:repeat(7,1fr);background:var(--bg);border-bottom:1px solid var(--border);}
 .dow{text-align:center;padding:9px 0;font-size:11px;font-weight:700;color:var(--ink4);letter-spacing:.5px;}
-.dow:first-child{color:var(--red);}
-.dow:last-child{color:var(--accent);}
+.dow:first-child{color:var(--red);}.dow:last-child{color:var(--accent);}
 .cal-days{display:grid;grid-template-columns:repeat(7,1fr);}
 .cal-cell{min-height:88px;padding:6px 6px 4px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s;}
 .cal-cell:hover{background:#fafafa;}
 .cal-cell:nth-child(7n){border-right:none;}
-.cal-cell.om .dn{color:var(--ink4);opacity:.4;}
+.cal-cell.om .dn{opacity:.35;}
 .cal-cell.today{background:var(--accent-pale);}
 .cal-cell.today .dn{background:var(--accent);color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;}
 .dn{font-size:12px;font-weight:600;color:var(--ink2);width:24px;height:24px;display:flex;align-items:center;justify-content:center;margin-bottom:3px;}
-.chip{font-size:10px;font-weight:500;border-radius:4px;padding:2px 5px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;cursor:pointer;transition:opacity .1s;}
+.chip{font-size:10px;font-weight:500;border-radius:4px;padding:2px 5px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;cursor:pointer;}
 .chip:hover{opacity:.75;}
 .more-chip{font-size:10px;color:var(--ink4);padding:0 5px;cursor:pointer;}
 
-/* ── GANTT ── */
+/* GANTT */
 .gantt-wrap{background:var(--card);border-radius:var(--r);border:1px solid var(--border);overflow:hidden;box-shadow:var(--sh);}
 .gh-row{display:flex;border-bottom:1px solid var(--border);background:var(--bg);}
-.gh-info{width:220px;flex-shrink:0;padding:10px 16px;font-size:11px;font-weight:700;color:var(--ink4);border-right:1px solid var(--border);text-transform:uppercase;letter-spacing:.4px;}
+.gh-info{width:200px;flex-shrink:0;padding:10px 14px;font-size:11px;font-weight:700;color:var(--ink4);border-right:1px solid var(--border);text-transform:uppercase;letter-spacing:.4px;}
 .gh-weeks{flex:1;display:flex;}
 .gh-wk{flex:1;text-align:center;padding:10px 0;font-size:10px;font-weight:700;color:var(--ink4);border-right:1px solid var(--border);}
 .gh-wk:last-child{border-right:none;}
 .g-row{display:flex;border-bottom:1px solid var(--border);align-items:stretch;cursor:pointer;transition:background .1s;}
 .g-row:last-child{border-bottom:none;}
 .g-row:hover{background:#fafafa;}
-.g-info{width:220px;flex-shrink:0;padding:12px 16px;border-right:1px solid var(--border);}
+.g-info{width:200px;flex-shrink:0;padding:11px 14px;border-right:1px solid var(--border);}
 .g-name{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:4px;}
-.g-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.g-meta{display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
 .g-av{width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;color:#fff;}
-.g-member{font-size:11px;color:var(--ink4);}
-.st-badge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:6px;}
-.g-timeline{flex:1;position:relative;overflow:hidden;}
+.g-mem{font-size:11px;color:var(--ink4);}
+.st-b{font-size:10px;font-weight:600;padding:2px 6px;border-radius:5px;}
+.g-tl{flex:1;position:relative;overflow:hidden;min-height:46px;}
 .g-bg{position:absolute;inset:0;display:flex;}
 .g-wbg{flex:1;border-right:1px solid var(--border);}
 .g-wbg:last-child{border-right:none;}
-.g-bar{position:absolute;top:50%;transform:translateY(-50%);height:20px;border-radius:6px;
-  display:flex;align-items:center;padding:0 8px;font-size:10px;font-weight:600;color:#fff;
-  box-shadow:0 2px 6px rgba(0,0,0,.15);white-space:nowrap;overflow:hidden;}
+.g-bar{position:absolute;top:50%;transform:translateY(-50%);height:20px;border-radius:6px;display:flex;align-items:center;padding:0 8px;font-size:10px;font-weight:600;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.15);white-space:nowrap;overflow:hidden;}
 .g-prog{position:absolute;left:0;top:0;bottom:0;border-radius:6px;background:rgba(255,255,255,.25);}
-.g-pct-txt{position:relative;z-index:1;}
+.g-pct{position:relative;z-index:1;}
 
-/* ── TASKS / KANBAN ── */
-.kanban-board{display:flex;gap:16px;overflow-x:auto;padding-bottom:8px;}
-.kanban-col{min-width:240px;max-width:280px;flex-shrink:0;}
-.kanban-col-header{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
-.kanban-col-title{font-size:13px;font-weight:700;color:var(--ink);}
-.kanban-count{font-size:11px;font-weight:700;padding:2px 7px;border-radius:10px;}
-.kanban-cards{display:flex;flex-direction:column;gap:8px;}
-.task-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:12px;cursor:pointer;transition:border-color .13s,box-shadow .13s;box-shadow:var(--sh);}
-.task-card:hover{border-color:var(--accent);box-shadow:var(--sh-lg);}
+/* KANBAN */
+.kanban-board{display:flex;gap:14px;overflow-x:auto;padding-bottom:8px;}
+.kb-col{min-width:230px;max-width:270px;flex-shrink:0;}
+.kb-col-hd{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.kb-col-title{font-size:13px;font-weight:700;}
+.kb-cnt{font-size:11px;font-weight:700;padding:2px 7px;border-radius:10px;}
+.kb-cards{display:flex;flex-direction:column;gap:8px;}
+.task-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:12px;cursor:pointer;transition:border-color .13s;box-shadow:var(--sh);}
+.task-card:hover{border-color:var(--accent);}
 .tc-title{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:6px;}
 .tc-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
-.tc-tag{font-size:10px;font-weight:600;padding:2px 7px;border-radius:6px;}
+.tc-tag{font-size:10px;font-weight:600;padding:2px 7px;border-radius:5px;}
 .tc-due{font-size:10px;color:var(--ink4);margin-left:auto;}
-.tc-assignees{display:flex;margin-top:8px;gap:3px;}
+.tc-avs{display:flex;margin-top:8px;gap:3px;}
 .tc-av{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#fff;border:1.5px solid var(--card);}
-.add-card-btn{width:100%;padding:8px;border-radius:var(--r);border:1px dashed var(--border2);background:transparent;font-size:12px;color:var(--ink4);cursor:pointer;font-family:inherit;transition:all .13s;margin-top:4px;}
-.add-card-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-pale);}
+.add-col-btn{width:100%;padding:8px;border-radius:var(--r);border:1px dashed var(--border2);background:transparent;font-size:12px;color:var(--ink4);cursor:pointer;font-family:inherit;transition:all .13s;margin-top:4px;}
+.add-col-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-pale);}
 
-/* ── MEMBERS PAGE ── */
-.members-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;}
-.member-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px;box-shadow:var(--sh);cursor:pointer;transition:border-color .13s;}
-.member-card:hover{border-color:var(--accent);}
+/* MEMBERS */
+.members-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;}
+.mc{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px;box-shadow:var(--sh);cursor:pointer;transition:border-color .13s;}
+.mc:hover{border-color:var(--accent);}
 .mc-top{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
-.mc-av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0;}
-.mc-name{font-size:14px;font-weight:700;color:var(--ink);}
+.mc-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0;}
+.mc-name{font-size:14px;font-weight:700;}
 .mc-role{font-size:11px;color:var(--ink4);}
 .mc-stats{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
-.mc-stat{background:var(--bg);border-radius:6px;padding:7px 8px;text-align:center;}
-.mc-stat .n{font-size:16px;font-weight:700;color:var(--ink);}
-.mc-stat .l{font-size:10px;color:var(--ink4);}
+.mc-s{background:var(--bg);border-radius:6px;padding:7px 8px;text-align:center;}
+.mc-s .n{font-size:16px;font-weight:700;}
+.mc-s .l{font-size:10px;color:var(--ink4);}
 
-/* ── GCAL SETUP PAGE ── */
-.gcal-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:24px;max-width:600px;box-shadow:var(--sh);}
+/* GCAL */
+.gcal-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:24px;max-width:580px;box-shadow:var(--sh);}
 .gcal-card h3{font-size:17px;font-weight:700;margin-bottom:6px;}
 .gcal-card p{font-size:13px;color:var(--ink3);line-height:1.7;margin-bottom:16px;}
-.step-list{display:flex;flex-direction:column;gap:12px;margin-bottom:20px;}
-.step-item{display:flex;gap:12px;align-items:flex-start;}
-.step-num{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
-.step-body{flex:1;}
-.step-title{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:2px;}
-.step-desc{font-size:12px;color:var(--ink3);line-height:1.6;}
-.step-link{font-size:12px;color:var(--accent);text-decoration:none;}
-.step-link:hover{text-decoration:underline;}
-.api-input-row{display:flex;gap:8px;margin-top:16px;}
-.api-input{flex:1;padding:10px 12px;border-radius:8px;border:1.5px solid var(--border2);font-size:13px;font-family:inherit;background:var(--bg);color:var(--ink);outline:none;}
-.api-input:focus{border-color:var(--accent);}
-.gcal-url-row{display:flex;gap:8px;margin-bottom:14px;}
-.gcal-url-input{flex:1;padding:10px 12px;border-radius:8px;border:1.5px solid var(--border2);font-size:12px;font-family:'DM Mono',monospace;background:var(--bg);color:var(--ink);outline:none;}
-.gcal-url-input:focus{border-color:var(--accent);}
-.status-msg{padding:10px 14px;border-radius:8px;font-size:13px;font-weight:500;margin-top:10px;display:none;}
-.status-msg.ok{background:var(--green-pale);color:var(--green);border:1px solid #bbf7d0;display:block;}
-.status-msg.err{background:var(--red-pale);color:var(--red);border:1px solid #fecaca;display:block;}
+.step-list{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
+.step-i{display:flex;gap:12px;align-items:flex-start;}
+.step-n{width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.step-t{font-size:13px;font-weight:600;margin-bottom:2px;}
+.step-d{font-size:12px;color:var(--ink3);line-height:1.6;}
+.step-d a{color:var(--accent);}
+.st-msg{padding:10px 14px;border-radius:8px;font-size:13px;font-weight:500;margin-top:10px;display:none;}
+.st-msg.ok{background:var(--green-pale);color:var(--green);border:1px solid #bbf7d0;display:block;}
+.st-msg.err{background:var(--red-pale);color:var(--red);border:1px solid #fecaca;display:block;}
 
-/* ── MODAL ── */
+/* MODAL */
 #overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:999;align-items:center;justify-content:center;padding:20px;}
 #overlay.open{display:flex;}
-.modal{background:var(--card);border-radius:16px;padding:24px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;box-shadow:var(--sh-lg);animation:popIn .2s ease;}
+.modal{background:var(--card);border-radius:16px;padding:24px;width:100%;max-width:460px;max-height:90vh;overflow-y:auto;box-shadow:var(--sh-lg);animation:popIn .2s ease;}
 @keyframes popIn{from{transform:scale(.94);opacity:0}to{transform:scale(1);opacity:1}}
-.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
-.modal-head h3{font-size:16px;font-weight:700;}
+.modal-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.modal-hd h3{font-size:16px;font-weight:700;}
 .close-btn{width:28px;height:28px;border-radius:50%;border:1px solid var(--border2);background:transparent;cursor:pointer;font-size:14px;color:var(--ink3);display:flex;align-items:center;justify-content:center;}
 .fr{margin-bottom:13px;}
 .fr label{display:block;font-size:11px;font-weight:700;color:var(--ink4);margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px;}
 .fr input,.fr select,.fr textarea{width:100%;padding:10px 12px;border-radius:8px;border:1.5px solid var(--border2);font-size:14px;font-family:inherit;background:var(--bg);color:var(--ink);outline:none;transition:border-color .13s;}
 .fr input:focus,.fr select:focus,.fr textarea:focus{border-color:var(--accent);}
-.fr textarea{resize:vertical;min-height:72px;}
+.fr textarea{resize:vertical;min-height:70px;}
 .fr2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .color-row{display:flex;gap:8px;flex-wrap:wrap;}
 .cdot{width:26px;height:26px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;transition:transform .1s;}
 .cdot.sel{border-color:var(--ink);transform:scale(1.15);}
 .modal-btns{display:flex;gap:10px;margin-top:18px;}
-.btn-cancel{flex:1;padding:11px;border-radius:8px;border:1px solid var(--border2);background:transparent;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;color:var(--ink2);}
-.btn-save{flex:2;padding:11px;border-radius:8px;background:var(--accent);border:none;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .13s;}
-.btn-save:hover{background:var(--accent-d);}
-.btn-danger{padding:11px;border-radius:8px;border:1px solid #fca5a5;background:var(--red-pale);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;color:var(--red);margin-top:8px;width:100%;}
+.btn-c{flex:1;padding:11px;border-radius:8px;border:1px solid var(--border2);background:transparent;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;color:var(--ink2);}
+.btn-s{flex:2;padding:11px;border-radius:8px;background:var(--accent);border:none;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;}
+.btn-s:hover{background:var(--accent-d);}
+.btn-del{padding:11px;border-radius:8px;border:1px solid #fca5a5;background:var(--red-pale);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;color:var(--red);margin-top:8px;width:100%;}
 
 /* TOAST */
 #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;}
@@ -247,17 +202,13 @@ html,body{height:100%;font-family:'Noto Sans TC',sans-serif;background:var(--bg)
 @media(max-width:768px){
   #sidebar{position:fixed;left:-100%;top:0;bottom:0;z-index:200;transition:left .25s;box-shadow:var(--sh-lg);}
   #sidebar.open{left:0;}
-  #sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:199;}
-  #sidebar-overlay.show{display:block;}
+  #mob-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:199;}
+  #mob-overlay.show{display:block;}
   #menu-btn{display:flex;align-items:center;justify-content:center;}
   #content{padding:16px;}
   .stats-row{grid-template-columns:1fr 1fr;}
   .kanban-board{flex-direction:column;}
-  .kanban-col{min-width:auto;max-width:none;}
-  .gantt-wrap{overflow-x:auto;}
-  .g-info{width:130px;}
-  .gh-info{width:130px;}
-  .members-grid{grid-template-columns:1fr 1fr;}
+  .kb-col{min-width:auto;max-width:none;}
 }
 @media(max-width:480px){
   .stats-row{grid-template-columns:1fr 1fr;}
@@ -266,78 +217,67 @@ html,body{height:100%;font-family:'Noto Sans TC',sans-serif;background:var(--bg)
 </style>
 </head>
 <body>
-<div id="sidebar-overlay" onclick="closeSidebar()"></div>
-
+<div id="mob-overlay" onclick="closeSB()"></div>
 <div id="app">
+
 <!-- SIDEBAR -->
 <div id="sidebar">
   <div class="sb-logo">
-    <div class="dot"><svg viewBox="0 0 16 16"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg></div>
-    <div><div class="name">專案管理</div><div class="ver">v2.0 · 團隊協作</div></div>
+    <div class="sb-logo-icon">📋</div>
+    <div><div class="sb-name">專案管理</div><div class="sb-ver">團隊協作版</div></div>
   </div>
-  <div class="sb-section">主要</div>
-  <div class="sb-item active" id="sb-dashboard" onclick="goPage('dashboard')"><span class="icon">🏠</span>總覽</div>
-  <div class="sb-item" id="sb-calendar" onclick="goPage('calendar')"><span class="icon">📅</span>行事曆<span class="badge" id="sb-ev-count">0</span></div>
-  <div class="sb-item" id="sb-gantt" onclick="goPage('gantt')"><span class="icon">📊</span>甘特圖</div>
-  <div class="sb-item" id="sb-tasks" onclick="goPage('tasks')"><span class="icon">✅</span>任務看板<span class="badge" id="sb-tk-count">0</span></div>
-  <div class="sb-section">設定</div>
-  <div class="sb-item" id="sb-members" onclick="goPage('members')"><span class="icon">👥</span>成員管理</div>
-  <div class="sb-item" id="sb-gcal" onclick="goPage('gcal')"><span class="icon">🔗</span>Google 日曆</div>
-  <div class="sb-divider"></div>
-  <div class="sb-gcal" id="gcal-status-pill" onclick="goPage('gcal')">
-    <div class="gc-title" id="gcal-pill-title">
-      <span>○</span> Google 日曆
-    </div>
-    <div class="gc-sub" id="gcal-pill-sub">點此設定聯動</div>
+  <div class="sb-sec">主要功能</div>
+  <div class="sb-item active" id="sb-dashboard" onclick="go('dashboard')"><span class="ic">🏠</span>總覽</div>
+  <div class="sb-item" id="sb-calendar" onclick="go('calendar')"><span class="ic">📅</span>行事曆<span class="badge" id="ev-cnt">0</span></div>
+  <div class="sb-item" id="sb-gantt" onclick="go('gantt')"><span class="ic">📊</span>甘特圖</div>
+  <div class="sb-item" id="sb-tasks" onclick="go('tasks')"><span class="ic">✅</span>任務看板<span class="badge" id="tk-cnt">0</span></div>
+  <div class="sb-sec">設定</div>
+  <div class="sb-item" id="sb-members" onclick="go('members')"><span class="ic">👥</span>成員管理</div>
+  <div class="sb-item" id="sb-gcal" onclick="go('gcal')"><span class="ic">🔗</span>Google 日曆</div>
+  <div class="sb-div"></div>
+  <div class="sb-sync">
+    <div class="sb-sync-row"><div id="sb-dot"></div><span id="sb-sync-label">初始化中…</span></div>
+    <div class="sb-sync-sub" id="sb-sync-sub">資料同步狀態</div>
   </div>
 </div>
 
 <!-- MAIN -->
 <div id="main">
-  <!-- TOPBAR -->
   <div id="topbar">
-    <button id="menu-btn" onclick="toggleSidebar()">☰</button>
+    <button id="menu-btn" onclick="toggleSB()">☰</button>
     <div id="page-title">總覽</div>
     <div class="tb-right">
-      <div id="sync-pill"><div id="sync-dot"></div><span id="sync-label">離線</span></div>
-      <button class="tb-btn primary" id="add-btn" onclick="openAddModal()">＋ 新增</button>
+      <button class="tb-btn primary" onclick="openAdd()">＋ 新增</button>
     </div>
   </div>
 
-  <!-- CONTENT -->
   <div id="content">
 
-    <!-- ── DASHBOARD ── -->
+    <!-- 總覽 -->
     <div class="page active" id="page-dashboard">
       <div class="stats-row" id="stats-row"></div>
-      <div class="section-header"><h3>📅 今日事件</h3><span class="count" id="today-count">0</span></div>
-      <div class="today-events" id="today-events"></div>
-      <div class="section-header"><h3>🔥 進行中任務</h3></div>
+      <div class="sec-hd"><h3>📅 今日事件</h3><span class="cnt" id="today-cnt">0</span></div>
+      <div id="today-evs"></div>
+      <div class="sec-hd" style="margin-top:20px"><h3>🔥 進行中任務</h3></div>
       <div id="dash-tasks"></div>
     </div>
 
-    <!-- ── CALENDAR ── -->
+    <!-- 行事曆 -->
     <div class="page" id="page-calendar">
       <div class="cal-toolbar">
-        <button class="nav-btn" onclick="prevMonth()">‹</button>
+        <button class="nav-btn" onclick="prevM()">‹</button>
         <h2 id="cal-title"></h2>
-        <button class="nav-btn" onclick="nextMonth()">›</button>
+        <button class="nav-btn" onclick="nextM()">›</button>
         <button class="today-btn" onclick="goToday()">今天</button>
-        <div class="view-switch">
-          <button class="vs-btn active" onclick="setCalView('month',this)">月</button>
-          <button class="vs-btn" onclick="setCalView('week',this)">週</button>
-        </div>
+        <button class="tb-btn primary" style="margin-left:auto" onclick="openModal('event',null)">＋ 新增事件</button>
       </div>
       <div class="cal-wrap">
-        <div class="dow-row">
-          <div class="dow">日</div><div class="dow">一</div><div class="dow">二</div>
-          <div class="dow">三</div><div class="dow">四</div><div class="dow">五</div><div class="dow">六</div>
-        </div>
+        <div class="dow-row"><div class="dow">日</div><div class="dow">一</div><div class="dow">二</div><div class="dow">三</div><div class="dow">四</div><div class="dow">五</div><div class="dow">六</div></div>
         <div class="cal-days" id="cal-days"></div>
       </div>
     </div>
 
-    <!-- ── GANTT ── -->
+    <!-- 甘特圖 -->
     <div class="page" id="page-gantt">
       <div class="cal-toolbar">
         <h2>甘特圖</h2>
@@ -346,7 +286,7 @@ html,body{height:100%;font-family:'Noto Sans TC',sans-serif;background:var(--bg)
       <div class="gantt-wrap" id="gantt-wrap"></div>
     </div>
 
-    <!-- ── TASKS ── -->
+    <!-- 任務看板 -->
     <div class="page" id="page-tasks">
       <div class="cal-toolbar">
         <h2>任務看板</h2>
@@ -355,7 +295,7 @@ html,body{height:100%;font-family:'Noto Sans TC',sans-serif;background:var(--bg)
       <div class="kanban-board" id="kanban-board"></div>
     </div>
 
-    <!-- ── MEMBERS ── -->
+    <!-- 成員管理 -->
     <div class="page" id="page-members">
       <div class="cal-toolbar">
         <h2>成員管理</h2>
@@ -364,228 +304,196 @@ html,body{height:100%;font-family:'Noto Sans TC',sans-serif;background:var(--bg)
       <div class="members-grid" id="members-grid"></div>
     </div>
 
-    <!-- ── GCAL ── -->
+    <!-- Google 日曆 -->
     <div class="page" id="page-gcal">
       <div class="gcal-card">
         <h3>🔗 連結 Google 日曆</h3>
-        <p>完成設定後，你在 Google 日曆新增的事件會自動出現在這裡，這裡新增的事件也會同步到 Google 日曆。</p>
+        <p>填入 API 金鑰和日曆 ID，即可把 Google 日曆的事件自動匯入本 App，並保持同步。</p>
         <div class="step-list">
-          <div class="step-item">
-            <div class="step-num">1</div>
-            <div class="step-body">
-              <div class="step-title">開啟 Google Cloud Console</div>
-              <div class="step-desc">前往 <a class="step-link" href="https://console.cloud.google.com" target="_blank">console.cloud.google.com</a>，用你的 Google 帳號登入，建立新專案（名稱隨意）。</div>
-            </div>
-          </div>
-          <div class="step-item">
-            <div class="step-num">2</div>
-            <div class="step-body">
-              <div class="step-title">啟用 Google Calendar API</div>
-              <div class="step-desc">在左側選單 →「API 和服務」→「程式庫」→ 搜尋「Google Calendar API」→ 點「啟用」。</div>
-            </div>
-          </div>
-          <div class="step-item">
-            <div class="step-num">3</div>
-            <div class="step-body">
-              <div class="step-title">建立 API 金鑰</div>
-              <div class="step-desc">「API 和服務」→「憑證」→「建立憑證」→「API 金鑰」，複製金鑰。</div>
-            </div>
-          </div>
-          <div class="step-item">
-            <div class="step-num">4</div>
-            <div class="step-body">
-              <div class="step-title">貼入下方並填入你的日曆 ID</div>
-              <div class="step-desc">日曆 ID 在 Google 日曆設定 → 選擇日曆 → 向下捲動找到「日曆 ID」，通常是你的 Gmail 地址。</div>
-            </div>
-          </div>
+          <div class="step-i"><div class="step-n">1</div><div><div class="step-t">啟用 Google Calendar API</div><div class="step-d">前往 <a href="https://console.cloud.google.com" target="_blank">Google Cloud Console</a> → API 和服務 → 程式庫 → 搜尋「Google Calendar API」→ 啟用</div></div></div>
+          <div class="step-i"><div class="step-n">2</div><div><div class="step-t">建立 API 金鑰</div><div class="step-d">API 和服務 → 憑證 → 建立憑證 → API 金鑰，複製金鑰貼入下方</div></div></div>
+          <div class="step-i"><div class="step-n">3</div><div><div class="step-t">將日曆設為公開</div><div class="step-d"><a href="https://calendar.google.com" target="_blank">Google 日曆</a> → 日曆設定 → 存取權限 → 勾選「公開提供這個日曆」</div></div></div>
+          <div class="step-i"><div class="step-n">4</div><div><div class="step-t">填入日曆 ID</div><div class="step-d">日曆設定 → 向下捲動找「日曆 ID」，通常是你的 Gmail 地址</div></div></div>
         </div>
-        <div class="fr">
-          <label>Google API 金鑰</label>
-          <input id="api-key-input" placeholder="AIzaSy..." type="password"/>
+        <div class="fr"><label>Google API 金鑰</label><input id="api-key" type="password" placeholder="AIzaSy…"/></div>
+        <div class="fr"><label>Google 日曆 ID</label><input id="cal-id" placeholder="yourname@gmail.com"/></div>
+        <div style="display:flex;gap:10px;margin-top:4px">
+          <button class="btn-s" style="padding:11px 20px;border-radius:8px" onclick="connectGcal()">儲存並測試連線</button>
+          <button class="tb-btn" onclick="document.getElementById('ics-inp').click()">📥 匯入 .ics 檔案</button>
         </div>
-        <div class="fr">
-          <label>Google 日曆 ID（你的 Gmail 地址）</label>
-          <input id="cal-id-input" placeholder="yourname@gmail.com"/>
-        </div>
-        <div style="display:flex;gap:10px;margin-top:6px">
-          <button class="btn-save" style="flex:1;padding:11px;border-radius:8px" onclick="saveGcalConfig()">儲存並測試連線</button>
-          <button class="tb-btn" onclick="importICS()">匯入 .ics 檔案</button>
-        </div>
-        <input type="file" id="ics-file" accept=".ics" style="display:none" onchange="handleICS(event)">
-        <div class="status-msg" id="gcal-msg"></div>
+        <input type="file" id="ics-inp" accept=".ics" style="display:none" onchange="handleICS(event)">
+        <div class="st-msg" id="gcal-msg"></div>
       </div>
     </div>
 
-  </div><!-- /content -->
-</div><!-- /main -->
-</div><!-- /app -->
+  </div>
+</div>
+</div>
 
 <!-- MODAL -->
 <div id="overlay" onclick="closeOuter(event)">
   <div class="modal">
-    <div class="modal-head"><h3 id="modal-title">新增</h3><button class="close-btn" onclick="closeModal()">✕</button></div>
+    <div class="modal-hd"><h3 id="modal-title">新增</h3><button class="close-btn" onclick="closeModal()">✕</button></div>
     <div id="modal-body"></div>
   </div>
 </div>
 <div id="toast"></div>
 
 <script>
-// ── STORAGE KEYS ──
-const SK={ev:'pm-events-v2',tk:'pm-tasks-v2',mb:'pm-members-v2',gc:'pm-gcal-v1'};
-// localStorage wrapper (same API shape for easy swap)
-const storage = {
-  get: (key) => { const v = localStorage.getItem(key); return v ? {value: v} : null; },
-  set: (key, value) => { localStorage.setItem(key, value); return true; },
-};
+// ── 儲存設定 ──
+// 使用 localStorage 作為主要儲存，並透過 BroadcastChannel 在同一瀏覽器的分頁間同步
+const SK={ev:'pm-ev-v3',tk:'pm-tk-v3',mb:'pm-mb-v3',gc:'pm-gc-v3'};
 const COLORS=['#2563eb','#16a34a','#d97706','#dc2626','#7c3aed','#db2777','#0891b2','#ea580c'];
 const today=new Date();
 let curY=today.getFullYear(),curM=today.getMonth();
-let events=[],tasks=[],members=[],gcalConfig={apiKey:'',calId:''};
+let events=[],tasks=[],members=[],gcCfg={apiKey:'',calId:''};
 let editColor=COLORS[0],modalMode='event',editId=null,activePage='dashboard';
+let prefDate='';
 
-// ── SYNC ──
-function setSS(s){
-  const d=document.getElementById('sync-dot'),l=document.getElementById('sync-label');
-  d.className='ok';l.textContent='本機儲存 ✓';
+// BroadcastChannel 讓多個分頁同步（同一瀏覽器）
+let bc;
+try{ bc=new BroadcastChannel('pm-sync'); bc.onmessage=()=>{ loadLocal(); renderAll(); }; }catch(e){}
+
+function save(key,val){
+  localStorage.setItem(key,JSON.stringify(val));
+  try{ bc&&bc.postMessage('update'); }catch(e){}
+}
+function load(key,def){ try{ const v=localStorage.getItem(key); return v?JSON.parse(v):def; }catch(e){return def;} }
+
+// ── 同步狀態 ──
+function setSS(s,msg){
+  const d=document.getElementById('sb-dot'),l=document.getElementById('sb-sync-label'),sub=document.getElementById('sb-sync-sub');
+  d.className=s;
+  l.textContent=s==='ok'?'資料已儲存':s==='busy'?'儲存中…':'就緒';
+  if(msg)sub.textContent=msg;
 }
 
-async function loadAll(){
-  try{
-    const ev=storage.get(SK.ev),tk=storage.get(SK.tk),mb=storage.get(SK.mb),gc=storage.get(SK.gc);
-    {
-    members=mb?JSON.parse(mb.value):[
-      {id:1,name:'我',role:'專案負責人',color:'#2563eb',tasks:0,events:0},
-      {id:2,name:'成員 A',role:'設計師',color:'#16a34a',tasks:0,events:0},
-      {id:3,name:'成員 B',role:'前端工程師',color:'#d97706',tasks:0,events:0},
-      {id:4,name:'成員 C',role:'後端工程師',color:'#7c3aed',tasks:0,events:0},
+// ── 載入 ──
+function loadLocal(){
+  const mn=String(curM+1).padStart(2,'0');
+  members=load(SK.mb,[
+    {id:1,name:'我',role:'專案負責人',color:'#2563eb'},
+    {id:2,name:'成員 A',role:'設計師',color:'#16a34a'},
+    {id:3,name:'成員 B',role:'前端工程師',color:'#d97706'},
+    {id:4,name:'成員 C',role:'後端工程師',color:'#7c3aed'},
+  ]);
+  events=load(SK.ev,null);
+  if(!events){
+    events=[
+      {id:1,title:'設計評審',date:`${curY}-${mn}-07`,time:'14:00',member:1,color:'#2563eb',note:'評審 Q2 UI 稿',gcal:false},
+      {id:2,title:'Sprint 結束',date:`${curY}-${mn}-10`,time:'18:00',member:2,color:'#16a34a',note:'',gcal:false},
+      {id:3,title:'全員回顧',date:`${curY}-${mn}-15`,time:'10:00',member:0,color:'#d97706',note:'線上會議',gcal:false},
+      {id:4,title:'發版上線',date:`${curY}-${mn}-22`,time:'09:00',member:3,color:'#dc2626',note:'',gcal:false},
     ];
-    const mn=String(curM+1).padStart(2,'0');
-    if(ev)events=JSON.parse(ev.value);
-    else{
-      events=[
-        {id:1,title:'設計評審',date:`${curY}-${mn}-07`,time:'14:00',member:1,color:'#2563eb',note:'評審 Q2 UI 稿',gcal:false},
-        {id:2,title:'Sprint 結束',date:`${curY}-${mn}-10`,time:'18:00',member:2,color:'#16a34a',note:'',gcal:false},
-        {id:3,title:'全員回顧',date:`${curY}-${mn}-15`,time:'10:00',member:0,color:'#d97706',note:'線上會議',gcal:false},
-        {id:4,title:'發版上線',date:`${curY}-${mn}-22`,time:'09:00',member:3,color:'#dc2626',note:'正式環境',gcal:false},
-        {id:5,title:'客戶提案',date:`${curY}-${mn}-28`,time:'15:00',member:4,color:'#7c3aed',note:'',gcal:false},
-      ];
-      await saveArr(SK.ev,events);
-    }
-    if(tk)tasks=JSON.parse(tk.value);
-    else{
-      tasks=[
-        {id:1,name:'UI 設計稿',member:1,start:0,dur:5,pct:80,color:'#2563eb',status:'進行中',priority:'高',due:`${curY}-${mn}-15`,desc:''},
-        {id:2,name:'前端切版',member:2,start:2,dur:6,pct:55,color:'#16a34a',status:'進行中',priority:'中',due:`${curY}-${mn}-20`,desc:''},
-        {id:3,name:'API 開發',member:3,start:1,dur:7,pct:40,color:'#d97706',status:'進行中',priority:'高',due:`${curY}-${mn}-25`,desc:''},
-        {id:4,name:'整合測試',member:4,start:6,dur:3,pct:0,color:'#7c3aed',status:'待開始',priority:'中',due:`${curY}-${mn}-28`,desc:''},
-        {id:5,name:'部署上線',member:1,start:8,dur:2,pct:0,color:'#dc2626',status:'待開始',priority:'緊急',due:`${curY}-${mn}-30`,desc:''},
-      ];
-      await saveArr(SK.tk,tasks);
-    }
-    if(gc)gcalConfig=JSON.parse(gc.value);
-    setSS('ok');
-  }catch(e){setSS('');}
-  renderAll();
-  document.getElementById('sb-ev-count').textContent=events.length;
-  document.getElementById('sb-tk-count').textContent=tasks.filter(t=>t.status!=='已完成').length;
-  if(gcalConfig.apiKey)updateGcalPill(true);
+    save(SK.ev,events);
+  }
+  tasks=load(SK.tk,null);
+  if(!tasks){
+    tasks=[
+      {id:1,name:'UI 設計稿',member:1,start:0,dur:5,pct:80,color:'#2563eb',status:'進行中',priority:'高',due:`${curY}-${mn}-15`,desc:''},
+      {id:2,name:'前端切版',member:2,start:2,dur:6,pct:55,color:'#16a34a',status:'進行中',priority:'中',due:`${curY}-${mn}-20`,desc:''},
+      {id:3,name:'API 開發',member:3,start:1,dur:7,pct:40,color:'#d97706',status:'進行中',priority:'高',due:`${curY}-${mn}-25`,desc:''},
+      {id:4,name:'整合測試',member:4,start:6,dur:3,pct:0,color:'#7c3aed',status:'待開始',priority:'中',due:`${curY}-${mn}-28`,desc:''},
+      {id:5,name:'部署上線',member:1,start:8,dur:2,pct:0,color:'#dc2626',status:'待開始',priority:'緊急',due:`${curY}-${mn}-30`,desc:''},
+    ];
+    save(SK.tk,tasks);
+  }
+  gcCfg=load(SK.gc,{apiKey:'',calId:''});
+  if(gcCfg.apiKey){ document.getElementById('api-key').value=gcCfg.apiKey; document.getElementById('cal-id').value=gcCfg.calId; updateGcalSB(true); }
 }
 
+function init(){
+  loadLocal();
+  renderAll();
+  updateBadges();
+  setSS('ok','本機儲存');
+}
 
-
-async function saveArr(key,arr){setSS('busy');storage.set(key,JSON.stringify(arr));setSS('ok');}
-
-// ── NAVIGATION ──
-function goPage(p){
+// ── 導覽 ──
+const TITLES={dashboard:'總覽',calendar:'行事曆',gantt:'甘特圖',tasks:'任務看板',members:'成員管理',gcal:'Google 日曆設定'};
+function go(p){
   activePage=p;
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
   document.querySelectorAll('.sb-item').forEach(x=>x.classList.remove('active'));
   document.getElementById('page-'+p).classList.add('active');
-  const sb=document.getElementById('sb-'+p);
-  if(sb)sb.classList.add('active');
-  const titles={dashboard:'總覽',calendar:'行事曆',gantt:'甘特圖',tasks:'任務看板',members:'成員管理',gcal:'Google 日曆設定'};
-  document.getElementById('page-title').textContent=titles[p]||p;
-  closeSidebar();
+  const sb=document.getElementById('sb-'+p); if(sb)sb.classList.add('active');
+  document.getElementById('page-title').textContent=TITLES[p]||p;
+  closeSB();
   if(p==='calendar')renderCal();
-  if(p==='gantt')renderGantt();
-  if(p==='tasks')renderKanban();
-  if(p==='members')renderMembers();
-  if(p==='dashboard')renderDashboard();
+  else if(p==='gantt')renderGantt();
+  else if(p==='tasks')renderKanban();
+  else if(p==='members')renderMembers();
+  else if(p==='dashboard')renderDashboard();
+}
+function openAdd(){ activePage==='tasks'||activePage==='gantt'?openModal('task',null):openModal('event',null); }
+function toggleSB(){ document.getElementById('sidebar').classList.toggle('open'); document.getElementById('mob-overlay').classList.toggle('show'); }
+function closeSB(){ document.getElementById('sidebar').classList.remove('open'); document.getElementById('mob-overlay').classList.remove('show'); }
+
+// ── 全部渲染 ──
+function renderAll(){
+  renderDashboard();
+  if(activePage==='calendar')renderCal();
+  else if(activePage==='gantt')renderGantt();
+  else if(activePage==='tasks')renderKanban();
+  else if(activePage==='members')renderMembers();
+}
+function updateBadges(){
+  document.getElementById('ev-cnt').textContent=events.length;
+  document.getElementById('tk-cnt').textContent=tasks.filter(t=>t.status!=='已完成').length;
 }
 
-function openAddModal(){
-  if(activePage==='tasks'||activePage==='gantt')openModal('task',null);
-  else openModal('event',null);
-}
-
-// ── SIDEBAR ──
-function toggleSidebar(){
-  document.getElementById('sidebar').classList.toggle('open');
-  document.getElementById('sidebar-overlay').classList.toggle('show');
-}
-function closeSidebar(){
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('sidebar-overlay').classList.remove('show');
-}
-
-// ── RENDER ALL ──
-function renderAll(){renderDashboard();if(activePage==='calendar')renderCal();if(activePage==='gantt')renderGantt();if(activePage==='tasks')renderKanban();if(activePage==='members')renderMembers();}
-
-// ── DASHBOARD ──
+// ── 總覽 ──
 function renderDashboard(){
-  const doneT=tasks.filter(t=>t.pct>=100).length;
-  const inProg=tasks.filter(t=>t.pct>0&&t.pct<100).length;
+  const done=tasks.filter(t=>t.pct>=100).length;
+  const inP=tasks.filter(t=>t.pct>0&&t.pct<100).length;
   const todayStr=today.toISOString().slice(0,10);
   const todayEv=events.filter(e=>e.date===todayStr);
-  const sr=document.getElementById('stats-row');
-  sr.innerHTML=`
-    <div class="stat-card"><div class="sl">總事件</div><div class="sv">${events.length}</div><div class="sd">本月行事曆</div><div class="bar"><div class="bar-fill" style="width:${Math.min(100,events.length*10)}%;background:#2563eb"></div></div></div>
-    <div class="stat-card"><div class="sl">任務進行中</div><div class="sv">${inProg}</div><div class="sd">共 ${tasks.length} 個任務</div><div class="bar"><div class="bar-fill" style="width:${tasks.length?Math.round(inProg/tasks.length*100):0}%;background:#d97706"></div></div></div>
-    <div class="stat-card"><div class="sl">已完成</div><div class="sv">${doneT}</div><div class="sd">完成率 ${tasks.length?Math.round(doneT/tasks.length*100):0}%</div><div class="bar"><div class="bar-fill" style="width:${tasks.length?Math.round(doneT/tasks.length*100):0}%;background:#16a34a"></div></div></div>
-    <div class="stat-card"><div class="sl">成員數</div><div class="sv">${members.length}</div><div class="sd">團隊人數</div><div class="bar"><div class="bar-fill" style="width:${Math.min(100,members.length*12)}%;background:#7c3aed"></div></div></div>
-  `;
-  document.getElementById('today-count').textContent=todayEv.length;
-  const te=document.getElementById('today-events');
-  if(!todayEv.length){te.innerHTML=`<div style="color:var(--ink4);font-size:13px;padding:12px 0">今天沒有事件，<span style="color:var(--accent);cursor:pointer" onclick="openModal('event',null)">點此新增</span></div>`;return;}
-  te.innerHTML=todayEv.map(e=>{
+  document.getElementById('stats-row').innerHTML=`
+    <div class="stat-card"><div class="sl">總事件</div><div class="sv">${events.length}</div><div class="sd">本月行事曆</div><div class="sbar"><div class="sbar-f" style="width:${Math.min(100,events.length*8)}%;background:#2563eb"></div></div></div>
+    <div class="stat-card"><div class="sl">進行中</div><div class="sv">${inP}</div><div class="sd">共 ${tasks.length} 個任務</div><div class="sbar"><div class="sbar-f" style="width:${tasks.length?Math.round(inP/tasks.length*100):0}%;background:#d97706"></div></div></div>
+    <div class="stat-card"><div class="sl">已完成</div><div class="sv">${done}</div><div class="sd">${tasks.length?Math.round(done/tasks.length*100):0}% 完成率</div><div class="sbar"><div class="sbar-f" style="width:${tasks.length?Math.round(done/tasks.length*100):0}%;background:#16a34a"></div></div></div>
+    <div class="stat-card"><div class="sl">成員數</div><div class="sv">${members.length}</div><div class="sd">團隊人數</div><div class="sbar"><div class="sbar-f" style="width:${Math.min(100,members.length*12)}%;background:#7c3aed"></div></div></div>`;
+  document.getElementById('today-cnt').textContent=todayEv.length;
+  const te=document.getElementById('today-evs');
+  te.innerHTML=todayEv.length?todayEv.map(e=>{
     const m=members.find(x=>x.id===e.member);
-    return`<div class="ev-row" onclick="openModal('event',${JSON.stringify(e).replace(/"/g,'&quot;')})">
+    return`<div class="ev-row" onclick='openModal("event",${JSON.stringify(e).replace(/'/g,"&#39;")})'>
       <div class="ev-dot" style="background:${e.color}"></div>
       <div class="ev-time">${e.time||''}</div>
-      <div><div class="ev-title">${e.title}</div>${m?`<div class="ev-sub">${m.name}</div>`:''}  </div>
-      ${e.gcal?`<span class="ev-badge" style="background:#e0f2fe;color:#0369a1">Google</span>`:''}
+      <div><div class="ev-title">${e.title}</div>${m?`<div class="ev-sub">${m.name}</div>`:''}</div>
+      ${e.gcal?'<span class="ev-badge" style="background:#e0f2fe;color:#0369a1">Google</span>':''}
     </div>`;
-  }).join('');
+  }).join(''):`<div style="color:var(--ink4);font-size:13px;padding:8px 0">今天沒有事件 · <span style="color:var(--accent);cursor:pointer" onclick='openModal("event",null)'>點此新增</span></div>`;
   const dt=document.getElementById('dash-tasks');
   const ip=tasks.filter(t=>t.status==='進行中').slice(0,4);
   dt.innerHTML=ip.length?ip.map(t=>{
     const m=members.find(x=>x.id===t.member);
-    const pclr=t.pct>=80?'#16a34a':t.pct>=40?'#d97706':'#2563eb';
-    return`<div class="ev-row" onclick="openModal('task',${JSON.stringify(t).replace(/"/g,'&quot;')})">
+    const pc=t.pct>=80?'#16a34a':t.pct>=40?'#d97706':'#2563eb';
+    return`<div class="ev-row" onclick='openModal("task",${JSON.stringify(t).replace(/'/g,"&#39;")})'>
       <div class="ev-dot" style="background:${t.color}"></div>
-      <div style="flex:1"><div class="ev-title">${t.name}</div>${m?`<div class="ev-sub">${m.name} · 截止 ${t.due||'未設定'}</div>`:''}
-        <div style="margin-top:6px;height:4px;background:var(--border);border-radius:2px"><div style="height:100%;width:${t.pct}%;background:${pclr};border-radius:2px"></div></div>
+      <div style="flex:1">
+        <div class="ev-title">${t.name}</div>
+        ${m?`<div class="ev-sub">${m.name}${t.due?' · 截止 '+t.due:''}</div>`:''}
+        <div style="margin-top:6px;height:4px;background:var(--border);border-radius:2px"><div style="height:100%;width:${t.pct}%;background:${pc};border-radius:2px"></div></div>
       </div>
-      <span style="font-size:12px;font-weight:700;color:${pclr}">${t.pct}%</span>
+      <span style="font-size:12px;font-weight:700;color:${pc}">${t.pct}%</span>
     </div>`;
-  }).join(''):`<div style="color:var(--ink4);font-size:13px;padding:12px 0">目前沒有進行中的任務</div>`;
+  }).join(''):`<div style="color:var(--ink4);font-size:13px;padding:8px 0">目前沒有進行中的任務</div>`;
 }
 
-// ── CALENDAR ──
-function prevMonth(){curM--;if(curM<0){curM=11;curY--;}renderCal();}
-function nextMonth(){curM++;if(curM>11){curM=0;curY++;}renderCal();}
+// ── 行事曆 ──
+function prevM(){curM--;if(curM<0){curM=11;curY--;}renderCal();}
+function nextM(){curM++;if(curM>11){curM=0;curY++;}renderCal();}
 function goToday(){curY=today.getFullYear();curM=today.getMonth();renderCal();}
-function setCalView(v,el){document.querySelectorAll('.vs-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');}
-
 function renderCal(){
   const months=['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
   document.getElementById('cal-title').textContent=`${curY} 年 ${months[curM]}`;
-  const grid=document.getElementById('cal-days');grid.innerHTML='';
+  const grid=document.getElementById('cal-days'); grid.innerHTML='';
   const first=new Date(curY,curM,1).getDay(),dim=new Date(curY,curM+1,0).getDate(),dipm=new Date(curY,curM,0).getDate();
   let cells=[];
   for(let i=first-1;i>=0;i--)cells.push({d:dipm-i,cur:false,m:curM-1,y:curM===0?curY-1:curY});
   for(let i=1;i<=dim;i++)cells.push({d:i,cur:true,m:curM,y:curY});
-  while(cells.length%7!==0){cells.push({d:cells.length-dim-first+1,cur:false,m:curM+1,y:curM===11?curY+1:curY});}
+  while(cells.length%7)cells.push({d:cells.length-dim-first+1,cur:false,m:curM+1,y:curM===11?curY+1:curY});
   cells.forEach(c=>{
     const ds=`${c.y}-${String(c.m+1).padStart(2,'0')}-${String(c.d).padStart(2,'0')}`;
     const cell=document.createElement('div');
@@ -597,7 +505,7 @@ function renderCal(){
       const ch=document.createElement('div');ch.className='chip';
       ch.style.cssText=`background:${ev.color}18;color:${ev.color};border:1px solid ${ev.color}35`;
       ch.textContent=(ev.time?ev.time.slice(0,5)+' ':'')+ev.title;
-      ch.onclick=(e)=>{e.stopPropagation();openModal('event',ev);};
+      ch.onclick=e=>{e.stopPropagation();openModal('event',ev);};
       cell.appendChild(ch);
     });
     if(dayEv.length>3){const m=document.createElement('div');m.className='more-chip';m.textContent=`+${dayEv.length-3} 更多`;cell.appendChild(m);}
@@ -606,147 +514,113 @@ function renderCal(){
   });
 }
 
-// ── GANTT ──
+// ── 甘特圖 ──
 const TW=10;
 function renderGantt(){
-  const wrap=document.getElementById('gantt-wrap');
+  const w=document.getElementById('gantt-wrap');
   let h=`<div class="gh-row"><div class="gh-info">任務</div><div class="gh-weeks">`;
-  for(let w=1;w<=TW;w++)h+=`<div class="gh-wk">第${w}週</div>`;
+  for(let i=1;i<=TW;i++)h+=`<div class="gh-wk">第${i}週</div>`;
   h+=`</div></div>`;
-  if(!tasks.length){h+=`<div style="padding:24px;text-align:center;color:var(--ink4)">尚無任務</div>`;wrap.innerHTML=h;return;}
+  if(!tasks.length){h+=`<div style="padding:24px;text-align:center;color:var(--ink4)">尚無任務，點「＋ 新增任務」開始</div>`;w.innerHTML=h;return;}
   tasks.forEach(t=>{
     const mb=members.find(m=>m.id===t.member)||{name:'?',color:'#888'};
-    const l=(t.start/TW*100).toFixed(1),w=(t.dur/TW*100).toFixed(1);
-    const pclr=t.pct>=100?'#16a34a':t.pct>0?'#d97706':'#9ca3af';
-    const stBg=t.pct>=100?'#dcfce7':t.pct>0?'#fef3c7':'#f3f4f6';
-    h+=`<div class="g-row" onclick="openModal('task',${JSON.stringify(t).replace(/"/g,'&quot;')})">
-      <div class="g-info">
-        <div class="g-name">${t.name}</div>
-        <div class="g-meta">
-          <div class="g-av" style="background:${mb.color}">${mb.name[0]}</div>
-          <span class="g-member">${mb.name}</span>
-          <span class="st-badge" style="background:${stBg};color:${pclr}">${t.status}</span>
-        </div>
+    const l=(t.start/TW*100).toFixed(1),ww=(t.dur/TW*100).toFixed(1);
+    const pc=t.pct>=100?'#16a34a':t.pct>0?'#d97706':'#9ca3af';
+    const sb=t.pct>=100?'#dcfce7':t.pct>0?'#fef3c7':'#f3f4f6';
+    h+=`<div class="g-row" onclick='openModal("task",${JSON.stringify(t).replace(/'/g,"&#39;")})'>
+      <div class="g-info"><div class="g-name">${t.name}</div>
+        <div class="g-meta"><div class="g-av" style="background:${mb.color}">${mb.name[0]}</div>
+        <span class="g-mem">${mb.name}</span>
+        <span class="st-b" style="background:${sb};color:${pc}">${t.status}</span></div>
       </div>
-      <div class="g-timeline" style="min-height:48px">
-        <div class="g-bg">${Array(TW).fill('<div class="g-wbg"></div>').join('')}</div>
-        <div class="g-bar" style="left:${l}%;width:${w}%;background:${t.color}">
-          <div class="g-prog" style="width:${t.pct}%"></div>
-          <span class="g-pct-txt">${t.pct}%</span>
+      <div class="g-tl"><div class="g-bg">${Array(TW).fill('<div class="g-wbg"></div>').join('')}</div>
+        <div class="g-bar" style="left:${l}%;width:${ww}%;background:${t.color}">
+          <div class="g-prog" style="width:${t.pct}%"></div><span class="g-pct">${t.pct}%</span>
         </div>
-      </div>
-    </div>`;
+      </div></div>`;
   });
-  wrap.innerHTML=h;
+  w.innerHTML=h;
 }
 
-// ── KANBAN ──
-const COLS=[{id:'待開始',label:'待開始',bg:'#f3f4f6',clr:'#6b7280'},{id:'進行中',label:'進行中',bg:'#eff6ff',clr:'#2563eb'},{id:'審核中',label:'審核中',bg:'#fef3c7',clr:'#d97706'},{id:'已完成',label:'已完成',bg:'#f0fdf4',clr:'#16a34a'}];
+// ── 看板 ──
+const COLS=[{id:'待開始',bg:'#f3f4f6',clr:'#6b7280'},{id:'進行中',bg:'#eff6ff',clr:'#2563eb'},{id:'審核中',bg:'#fef3c7',clr:'#d97706'},{id:'已完成',bg:'#f0fdf4',clr:'#16a34a'}];
 function renderKanban(){
-  const board=document.getElementById('kanban-board');
-  board.innerHTML=COLS.map(col=>{
-    const colTasks=tasks.filter(t=>t.status===col.id);
-    return`<div class="kanban-col">
-      <div class="kanban-col-header">
-        <div class="kanban-col-title">${col.label}</div>
-        <span class="kanban-count" style="background:${col.bg};color:${col.clr}">${colTasks.length}</span>
-      </div>
-      <div class="kanban-cards">
-        ${colTasks.map(t=>{
+  document.getElementById('kanban-board').innerHTML=COLS.map(col=>{
+    const ct=tasks.filter(t=>t.status===col.id);
+    return`<div class="kb-col">
+      <div class="kb-col-hd"><div class="kb-col-title">${col.id}</div><span class="kb-cnt" style="background:${col.bg};color:${col.clr}">${ct.length}</span></div>
+      <div class="kb-cards">
+        ${ct.map(t=>{
           const mb=members.find(m=>m.id===t.member);
-          const prClr={'緊急':'#fee2e2','高':'#ffe4e6','中':'#eff6ff','低':'#f0fdf4'}[t.priority]||'#f3f4f6';
-          const prTxt={'緊急':'#dc2626','高':'#db2777','中':'#2563eb','低':'#16a34a'}[t.priority]||'#6b7280';
-          return`<div class="task-card" onclick="openModal('task',${JSON.stringify(t).replace(/"/g,'&quot;')})">
+          const prC={'緊急':'#fee2e2','高':'#ffe4e6','中':'#eff6ff','低':'#f0fdf4'}[t.priority]||'#f3f4f6';
+          const prT={'緊急':'#dc2626','高':'#db2777','中':'#2563eb','低':'#16a34a'}[t.priority]||'#6b7280';
+          return`<div class="task-card" onclick='openModal("task",${JSON.stringify(t).replace(/'/g,"&#39;")})'>
             <div class="tc-title">${t.name}</div>
-            <div class="tc-meta">
-              <span class="tc-tag" style="background:${prClr};color:${prTxt}">${t.priority||'中'}</span>
-              ${t.due?`<span class="tc-due">📅 ${t.due}</span>`:''}
-            </div>
-            ${mb?`<div class="tc-assignees"><div class="tc-av" style="background:${mb.color}">${mb.name[0]}</div></div>`:''}
+            <div class="tc-meta"><span class="tc-tag" style="background:${prC};color:${prT}">${t.priority||'中'}</span>${t.due?`<span class="tc-due">📅 ${t.due}</span>`:''}</div>
+            ${mb?`<div class="tc-avs"><div class="tc-av" style="background:${mb.color}">${mb.name[0]}</div></div>`:''}
           </div>`;
         }).join('')}
-        <button class="add-card-btn" onclick="openModal('task',null)">＋ 新增</button>
-      </div>
-    </div>`;
+        <button class="add-col-btn" onclick='openModal("task",null)'>＋ 新增</button>
+      </div></div>`;
   }).join('');
 }
 
-// ── MEMBERS ──
+// ── 成員 ──
 function renderMembers(){
-  const grid=document.getElementById('members-grid');
-  grid.innerHTML=members.map(m=>{
+  document.getElementById('members-grid').innerHTML=members.map(m=>{
     const mt=tasks.filter(t=>t.member===m.id).length;
     const me=events.filter(e=>e.member===m.id).length;
     const done=tasks.filter(t=>t.member===m.id&&t.pct>=100).length;
-    return`<div class="member-card" onclick="openModal('member',${JSON.stringify(m).replace(/"/g,'&quot;')})">
-      <div class="mc-top">
-        <div class="mc-av" style="background:${m.color}">${m.name[0]}</div>
+    return`<div class="mc" onclick='openModal("member",${JSON.stringify(m).replace(/'/g,"&#39;")})'>
+      <div class="mc-top"><div class="mc-av" style="background:${m.color}">${m.name[0]}</div>
         <div><div class="mc-name">${m.name}</div><div class="mc-role">${m.role||'成員'}</div></div>
       </div>
       <div class="mc-stats">
-        <div class="mc-stat"><div class="n">${mt}</div><div class="l">任務</div></div>
-        <div class="mc-stat"><div class="n">${done}</div><div class="l">完成</div></div>
-        <div class="mc-stat"><div class="n">${me}</div><div class="l">事件</div></div>
-        <div class="mc-stat"><div class="n">${mt?Math.round(done/mt*100):0}%</div><div class="l">完成率</div></div>
-      </div>
-    </div>`;
-  }).join('')+`<div class="member-card" style="border:1px dashed var(--border2);cursor:pointer;display:flex;align-items:center;justify-content:center;min-height:140px" onclick="openModal('member',null)"><div style="text-align:center;color:var(--ink4)"><div style="font-size:28px">＋</div><div style="font-size:12px;margin-top:4px">新增成員</div></div></div>`;
+        <div class="mc-s"><div class="n">${mt}</div><div class="l">任務</div></div>
+        <div class="mc-s"><div class="n">${done}</div><div class="l">完成</div></div>
+        <div class="mc-s"><div class="n">${me}</div><div class="l">事件</div></div>
+        <div class="mc-s"><div class="n">${mt?Math.round(done/mt*100):0}%</div><div class="l">完成率</div></div>
+      </div></div>`;
+  }).join('')+`<div class="mc" style="border:1px dashed var(--border2);display:flex;align-items:center;justify-content:center;min-height:140px" onclick='openModal("member",null)'>
+    <div style="text-align:center;color:var(--ink4)"><div style="font-size:28px">＋</div><div style="font-size:12px;margin-top:4px">新增成員</div></div></div>`;
 }
 
 // ── MODAL ──
-let prefDate='';
 function openModal(mode,item,date=''){
   modalMode=mode;editId=item?item.id:null;prefDate=date;
   editColor=item?item.color:COLORS[0];
   const titles={event:item?'編輯事件':'新增事件',task:item?'編輯任務':'新增任務',member:item?'編輯成員':'新增成員'};
   document.getElementById('modal-title').textContent=titles[mode];
-  const mOpts=members.map(m=>`<option value="${m.id}">${m.name}</option>`).join('');
+  const mO=members.map(m=>`<option value="${m.id}">${m.name}</option>`).join('');
   const dots=COLORS.map((c,i)=>`<div class="cdot${(item&&item.color===c)||(i===0&&!item)?' sel':''}" style="background:${c}" onclick="pickC('${c}',this)"></div>`).join('');
   let html='';
   if(mode==='event'){
-    html=`
-      <div class="fr"><label>事件名稱</label><input id="f-title" value="${item?item.title:''}" placeholder="例：設計評審"/></div>
-      <div class="fr fr2">
-        <div><label>日期</label><input id="f-date" type="date" value="${item?item.date:prefDate||today.toISOString().slice(0,10)}"/></div>
-        <div><label>時間</label><input id="f-time" type="time" value="${item?item.time:'10:00'}"/></div>
-      </div>
-      <div class="fr"><label>指派給</label><select id="f-member"><option value="0">全體成員</option>${mOpts}</select></div>
+    html=`<div class="fr"><label>事件名稱</label><input id="f-title" value="${item?item.title:''}" placeholder="例：設計評審"/></div>
+      <div class="fr fr2"><div><label>日期</label><input id="f-date" type="date" value="${item?item.date:prefDate||today.toISOString().slice(0,10)}"/></div>
+        <div><label>時間</label><input id="f-time" type="time" value="${item?item.time:'10:00'}"/></div></div>
+      <div class="fr"><label>指派給</label><select id="f-member"><option value="0">全體成員</option>${mO}</select></div>
       <div class="fr"><label>顏色</label><div class="color-row">${dots}</div></div>
       <div class="fr"><label>備註</label><textarea id="f-note" placeholder="選填…">${item?item.note:''}</textarea></div>
-      <div class="modal-btns"><button class="btn-cancel" onclick="closeModal()">取消</button><button class="btn-save" onclick="saveItem()">儲存</button></div>
-      ${item?`<button class="btn-danger" onclick="deleteItem()">刪除此事件</button>`:''}
-    `;
+      <div class="modal-btns"><button class="btn-c" onclick="closeModal()">取消</button><button class="btn-s" onclick="saveItem()">儲存</button></div>
+      ${item?`<button class="btn-del" onclick="deleteItem()">刪除此事件</button>`:''}`;
   }else if(mode==='task'){
-    const priOpts=['緊急','高','中','低'].map(p=>`<option value="${p}"${item&&item.priority===p?' selected':''}>${p}</option>`).join('');
-    const stOpts=['待開始','進行中','審核中','已完成'].map(s=>`<option value="${s}"${item&&item.status===s?' selected':''}>${s}</option>`).join('');
-    html=`
-      <div class="fr"><label>任務名稱</label><input id="f-title" value="${item?item.name:''}" placeholder="例：UI 設計"/></div>
-      <div class="fr fr2">
-        <div><label>優先級</label><select id="f-pri">${priOpts}</select></div>
-        <div><label>狀態</label><select id="f-status">${stOpts}</select></div>
-      </div>
-      <div class="fr fr2">
-        <div><label>截止日</label><input id="f-due" type="date" value="${item?item.due:''}" /></div>
-        <div><label>進度 %</label><input id="f-pct" type="number" min="0" max="100" value="${item?item.pct:0}"/></div>
-      </div>
-      <div class="fr fr2">
-        <div><label>開始週</label><input id="f-start" type="number" min="1" max="${TW}" value="${item?item.start+1:1}"/></div>
-        <div><label>持續週數</label><input id="f-dur" type="number" min="1" max="${TW}" value="${item?item.dur:2}"/></div>
-      </div>
-      <div class="fr"><label>負責人</label><select id="f-member">${mOpts}</select></div>
+    const priO=['緊急','高','中','低'].map(p=>`<option value="${p}"${item&&item.priority===p?' selected':''}>${p}</option>`).join('');
+    const stO=['待開始','進行中','審核中','已完成'].map(s=>`<option value="${s}"${item&&item.status===s?' selected':''}>${s}</option>`).join('');
+    html=`<div class="fr"><label>任務名稱</label><input id="f-title" value="${item?item.name:''}" placeholder="例：UI 設計"/></div>
+      <div class="fr fr2"><div><label>優先級</label><select id="f-pri">${priO}</select></div><div><label>狀態</label><select id="f-status">${stO}</select></div></div>
+      <div class="fr fr2"><div><label>截止日</label><input id="f-due" type="date" value="${item?item.due||'':''}"/></div><div><label>進度 %</label><input id="f-pct" type="number" min="0" max="100" value="${item?item.pct:0}"/></div></div>
+      <div class="fr fr2"><div><label>開始週</label><input id="f-start" type="number" min="1" max="${TW}" value="${item?item.start+1:1}"/></div><div><label>持續週數</label><input id="f-dur" type="number" min="1" max="${TW}" value="${item?item.dur:2}"/></div></div>
+      <div class="fr"><label>負責人</label><select id="f-member">${mO}</select></div>
       <div class="fr"><label>顏色</label><div class="color-row">${dots}</div></div>
-      <div class="fr"><label>說明</label><textarea id="f-desc" placeholder="選填…">${item?item.desc||'':''}</textarea></div>
-      <div class="modal-btns"><button class="btn-cancel" onclick="closeModal()">取消</button><button class="btn-save" onclick="saveItem()">儲存</button></div>
-      ${item?`<button class="btn-danger" onclick="deleteItem()">刪除此任務</button>`:''}
-    `;
+      <div class="fr"><label>說明</label><textarea id="f-desc">${item?item.desc||'':''}</textarea></div>
+      <div class="modal-btns"><button class="btn-c" onclick="closeModal()">取消</button><button class="btn-s" onclick="saveItem()">儲存</button></div>
+      ${item?`<button class="btn-del" onclick="deleteItem()">刪除此任務</button>`:''}`;
   }else{
-    html=`
-      <div class="fr"><label>姓名</label><input id="f-title" value="${item?item.name:''}" placeholder="姓名"/></div>
-      <div class="fr"><label>角色</label><input id="f-role" value="${item?item.role:''}" placeholder="例：設計師、工程師…"/></div>
+    html=`<div class="fr"><label>姓名</label><input id="f-title" value="${item?item.name:''}" placeholder="姓名"/></div>
+      <div class="fr"><label>角色</label><input id="f-role" value="${item?item.role||'':''}" placeholder="例：設計師、工程師…"/></div>
       <div class="fr"><label>顏色</label><div class="color-row">${dots}</div></div>
-      <div class="modal-btns"><button class="btn-cancel" onclick="closeModal()">取消</button><button class="btn-save" onclick="saveItem()">儲存</button></div>
-      ${item?`<button class="btn-danger" onclick="deleteItem()">移除此成員</button>`:''}
-    `;
+      <div class="modal-btns"><button class="btn-c" onclick="closeModal()">取消</button><button class="btn-s" onclick="saveItem()">儲存</button></div>
+      ${item?`<button class="btn-del" onclick="deleteItem()">移除此成員</button>`:''}`;
   }
   document.getElementById('modal-body').innerHTML=html;
   if(mode!=='member'&&item)document.getElementById('f-member').value=item.member||0;
@@ -756,16 +630,16 @@ function closeModal(){document.getElementById('overlay').classList.remove('open'
 function closeOuter(e){if(e.target===document.getElementById('overlay'))closeModal();}
 function pickC(c,el){editColor=c;document.querySelectorAll('.cdot').forEach(d=>d.classList.remove('sel'));el.classList.add('sel');}
 
-async function saveItem(){
+function saveItem(){
   const title=(document.getElementById('f-title')?.value||'').trim();
   if(!title){showToast('請輸入名稱');return;}
+  setSS('busy');
   if(modalMode==='event'){
     const obj={id:editId||Date.now(),title,date:document.getElementById('f-date').value,
       time:document.getElementById('f-time').value,member:parseInt(document.getElementById('f-member').value)||0,
       color:editColor,note:document.getElementById('f-note').value,gcal:false};
     if(editId)events=events.map(e=>e.id===editId?obj:e);else events.push(obj);
-    await saveArr(SK.ev,events);
-    document.getElementById('sb-ev-count').textContent=events.length;
+    save(SK.ev,events);
   }else if(modalMode==='task'){
     const pct=Math.min(100,Math.max(0,parseInt(document.getElementById('f-pct').value)||0));
     const status=document.getElementById('f-status').value;
@@ -776,86 +650,82 @@ async function saveItem(){
       pct,color:editColor,status,priority:document.getElementById('f-pri').value||'中',
       due:document.getElementById('f-due').value,desc:document.getElementById('f-desc').value};
     if(editId)tasks=tasks.map(t=>t.id===editId?obj:t);else tasks.push(obj);
-    await saveArr(SK.tk,tasks);
-    document.getElementById('sb-tk-count').textContent=tasks.filter(t=>t.status!=='已完成').length;
+    save(SK.tk,tasks);
   }else{
-    const obj={id:editId||Date.now(),name:title,role:document.getElementById('f-role').value,color:editColor,tasks:0,events:0};
+    const obj={id:editId||Date.now(),name:title,role:document.getElementById('f-role').value,color:editColor};
     if(editId)members=members.map(m=>m.id===editId?obj:m);else members.push(obj);
-    await saveArr(SK.mb,members);
+    save(SK.mb,members);
   }
-  closeModal();renderAll();showToast('已儲存 ✓');
+  closeModal();renderAll();updateBadges();setSS('ok');showToast('已儲存 ✓');
 }
 
-async function deleteItem(){
+function deleteItem(){
   if(!confirm('確定刪除？'))return;
-  if(modalMode==='event'){events=events.filter(e=>e.id!==editId);await saveArr(SK.ev,events);}
-  else if(modalMode==='task'){tasks=tasks.filter(t=>t.id!==editId);await saveArr(SK.tk,tasks);}
-  else{members=members.filter(m=>m.id!==editId);await saveArr(SK.mb,members);}
-  closeModal();renderAll();showToast('已刪除');
+  setSS('busy');
+  if(modalMode==='event'){events=events.filter(e=>e.id!==editId);save(SK.ev,events);}
+  else if(modalMode==='task'){tasks=tasks.filter(t=>t.id!==editId);save(SK.tk,tasks);}
+  else{members=members.filter(m=>m.id!==editId);save(SK.mb,members);}
+  closeModal();renderAll();updateBadges();setSS('ok');showToast('已刪除');
 }
 
-// ── GCAL ──
-async function saveGcalConfig(){
-  const key=document.getElementById('api-key-input').value.trim();
-  const cid=document.getElementById('cal-id-input').value.trim();
+// ── GOOGLE 日曆 ──
+async function connectGcal(){
+  const key=document.getElementById('api-key').value.trim();
+  const cid=document.getElementById('cal-id').value.trim();
   const msg=document.getElementById('gcal-msg');
-  if(!key||!cid){msg.className='status-msg err';msg.textContent='請填入 API 金鑰和日曆 ID';return;}
-  msg.className='status-msg';msg.textContent='測試連線中…';msg.style.display='block';
+  if(!key||!cid){msg.className='st-msg err';msg.textContent='請填入 API 金鑰和日曆 ID';return;}
+  msg.className='st-msg';msg.textContent='測試連線中…';msg.style.display='block';
   try{
-    const url=`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(cid)}/events?maxResults=10&key=${key}&timeMin=${new Date().toISOString()}`;
+    const url=`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(cid)}/events?maxResults=50&key=${key}&timeMin=${new Date(curY,curM,1).toISOString()}&timeMax=${new Date(curY,curM+1,0,23,59).toISOString()}`;
     const res=await fetch(url);
-    if(!res.ok)throw new Error('連線失敗');
+    if(!res.ok){const e=await res.json();throw new Error(e.error?.message||'連線失敗');}
     const data=await res.json();
-    gcalConfig={apiKey:key,calId:cid};
-    storage.set(SK.gc,JSON.stringify(gcalConfig));
+    gcCfg={apiKey:key,calId:cid};
+    save(SK.gc,gcCfg);
     const newEvs=(data.items||[]).map(item=>({
       id:'gcal-'+item.id,title:item.summary||'(無標題)',
-      date:item.start?.date||item.start?.dateTime?.slice(0,10)||'',
-      time:item.start?.dateTime?.slice(11,16)||'',
+      date:(item.start?.date||item.start?.dateTime||'').slice(0,10),
+      time:item.start?.dateTime?item.start.dateTime.slice(11,16):'',
       member:0,color:'#0891b2',note:item.description||'',gcal:true
     })).filter(e=>e.date);
-    const existing=events.filter(e=>!e.gcal);
-    events=[...existing,...newEvs];
-    await saveArr(SK.ev,events);
-    msg.className='status-msg ok';msg.textContent=`✓ 連線成功！已匯入 ${newEvs.length} 個 Google 日曆事件`;
-    updateGcalPill(true);renderAll();
-  }catch(e){msg.className='status-msg err';msg.textContent='連線失敗，請檢查 API 金鑰和日曆 ID 是否正確';}
+    events=[...events.filter(e=>!e.gcal),...newEvs];
+    save(SK.ev,events);
+    msg.className='st-msg ok';msg.textContent=`✓ 連線成功！已匯入 ${newEvs.length} 個 Google 日曆事件`;
+    updateGcalSB(true);renderAll();updateBadges();
+  }catch(e){msg.className='st-msg err';msg.textContent='連線失敗：'+e.message;}
 }
 
-function updateGcalPill(on){
-  const el=document.getElementById('gcal-status-pill');
-  const t=document.getElementById('gcal-pill-title');
-  const s=document.getElementById('gcal-pill-sub');
-  if(on){el.classList.add('connected');t.innerHTML='<span>●</span> Google 日曆';s.textContent='已連結，點此管理';}
+function updateGcalSB(on){
+  if(on){document.getElementById('sb-sync-sub').textContent='Google 日曆已連結';}
 }
 
-function importICS(){document.getElementById('ics-file').click();}
 function handleICS(event){
   const file=event.target.files[0];if(!file)return;
   const reader=new FileReader();
-  reader.onload=async e=>{
+  reader.onload=e=>{
     const text=e.target.result;
-    const evMatches=[...text.matchAll(/BEGIN:VEVENT([\s\S]*?)END:VEVENT/g)];
+    const matches=[...text.matchAll(/BEGIN:VEVENT([\s\S]*?)END:VEVENT/g)];
     let count=0;
-    evMatches.forEach(m=>{
+    matches.forEach(m=>{
       const body=m[1];
-      const get=(k)=>{const r=new RegExp(k+':([^\r\n]+)');const x=body.match(r);return x?x[1].trim():''};
+      const get=k=>{const r=new RegExp(k+'[^:]*:([^\r\n]+)');const x=body.match(r);return x?x[1].trim():'';};
       const title=get('SUMMARY')||'(無標題)';
       const dtstart=get('DTSTART');
-      const date=dtstart?dtstart.slice(0,4)+'-'+dtstart.slice(4,6)+'-'+dtstart.slice(6,8):'';
-      const time=dtstart.length>8?dtstart.slice(9,11)+':'+dtstart.slice(11,13):'';
-      if(date){events.push({id:'ics-'+Date.now()+'-'+count,title,date,time,member:0,color:'#0891b2',note:get('DESCRIPTION'),gcal:false});count++;}
+      if(!dtstart)return;
+      const date=dtstart.slice(0,4)+'-'+dtstart.slice(4,6)+'-'+dtstart.slice(6,8);
+      const time=dtstart.length>8?dtstart.replace(/.*T(\d{2})(\d{2}).*/,'$1:$2'):'';
+      events.push({id:'ics-'+Date.now()+'-'+count++,title,date,time,member:0,color:'#0891b2',note:get('DESCRIPTION'),gcal:false});
     });
-    await saveArr(SK.ev,events);renderAll();showToast(`已匯入 ${count} 個事件 ✓`);
+    save(SK.ev,events);renderAll();updateBadges();showToast(`已匯入 ${count} 個事件 ✓`);
   };
-  reader.readAsText(file);
+  reader.readAsText(file,'UTF-8');
 }
 
 // ── TOAST ──
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
 
-// ── INIT ──
-loadAll();
+// ── 啟動 ──
+init();
 </script>
 </body>
 </html>
